@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Handheld receiver lab ranking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f6;--surf:#fff;--ink:#13202f;--mut:#566679;--line:#d3dce6;--acc:#0a6c8f;--new:#c2255c;--bar:#c4dce8;--grid:#e2e8ef;--hl:#e6f2f8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0e151d;--surf:#16202b;--ink:#e7eef6;--mut:#93a3b6;--line:#263444;--acc:#4cc2e8;--new:#ff7aa8;--bar:#244a5e;--grid:#1e2a37;--hl:#1b2e3d}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0e151d;--surf:#16202b;--ink:#e7eef6;--mut:#93a3b6;--line:#263444;--acc:#4cc2e8;--new:#ff7aa8;--bar:#244a5e;--grid:#1e2a37;--hl:#1b2e3d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px;margin:0 auto;padding:16px 18px 48px}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 16px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+h1{font:700 clamp(21px,3.4vw,28px)/1.1 "Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;letter-spacing:-.02em;margin:0}
+.lede{color:var(--mut);font-size:14px;margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-bottom:12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surf)}
+.seg button{border:0;background:none;color:var(--ink);font:inherit;padding:8px 16px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--acc);color:#fff}
+input[type=search]{font:inherit;color:var(--ink);background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:220px;flex:1 1 220px;max-width:340px}
+button:focus-visible,input:focus-visible,summary:focus-visible,svg [tabindex]:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.hp{border:1px solid var(--line);background:var(--surf);color:var(--ink);font:inherit;padding:8px 16px;border-radius:10px;cursor:pointer}.hp[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chip{border:1px solid var(--line);background:var(--surf);color:var(--ink);font:inherit;font-size:13px;padding:3px 11px;border-radius:99px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chip i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.chip[aria-pressed=true]{border-color:var(--acc);background:var(--hl);font-weight:600}
+.grid{display:grid;gap:18px;grid-template-columns:minmax(0,1fr);grid-template-areas:"chart" "cmp" "tbl"}
+@media(min-width:1040px){.grid{grid-template-columns:minmax(0,1fr) 330px;grid-template-areas:"chart cmp" "tbl cmp"}}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:16px}
+.chart{grid-area:chart}.tbl{grid-area:tbl;padding:0;overflow:hidden}
+.cmp{grid-area:cmp;align-self:start}
+@media(min-width:1040px){.cmp{position:sticky;top:calc(12px + env(safe-area-inset-top,0px))}}
+h2{font:700 18px/1.2 "Bricolage Grotesque","Instrument Sans",sans-serif;margin:0 0 4px}
+.sub{color:var(--mut);font-size:13px;margin:0 0 10px}
+.plot{position:relative}
+svg{width:100%;height:auto;display:block}
+svg text{fill:var(--mut);font-size:11px;font-family:inherit}
+svg .g{stroke:var(--grid)}
+svg circle{cursor:pointer;transition:r .12s}
+svg circle:hover{stroke:var(--ink);stroke-width:2}
+#tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 9px;border-radius:8px;white-space:nowrap;opacity:0;transform:translate(-50%,-120%);z-index:3}
+.tbl details{margin:0}.tbl summary{padding:14px 16px;font:700 18px/1.2 "Bricolage Grotesque","Instrument Sans",sans-serif}.tbl details[open] summary{border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:620px}
+th,td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{position:sticky;top:0;background:var(--surf);font-weight:600;font-size:13px;white-space:nowrap}
+th button{all:unset;cursor:pointer;display:inline-flex;gap:4px;align-items:center}
+th button:focus-visible{outline:3px solid var(--acc)}
+th small{color:var(--mut);font-weight:400}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--hl)}
+tbody tr.on{background:var(--hl);box-shadow:inset 4px 0 0 var(--c)}
+td.n{background:linear-gradient(var(--bar),var(--bar)) left bottom/var(--p) 4px no-repeat}
+.mk{color:var(--mut);font-size:12px;margin-right:6px}
+.vd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:7px;border:2px solid var(--acc);vertical-align:middle}.vd.v2{background:var(--acc)}.vd.v1{background:none}.vd.v0{background:none;border:2px dashed var(--new)}
+.pill{font-size:11px;font-weight:600;color:#fff;background:var(--new);border-radius:6px;padding:1px 6px;margin-left:6px;text-decoration:none}
+.cap{padding:10px 14px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line)}
+.empty{padding:28px 14px;color:var(--mut);text-align:center}
+.cm{margin:12px 0 0}.cm h3{font-size:13px;margin:0 0 4px;color:var(--mut);font-weight:600}
+.cr{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:12.5px;margin-bottom:3px}
+.cr b{font-weight:600}.cb{grid-column:1/3;height:6px;border-radius:3px;background:var(--grid)}
+.cb i{display:block;height:100%;border-radius:3px}
+.key{display:flex;gap:8px;align-items:center;font-size:13px;margin:6px 0}
+.key i{width:10px;height:10px;border-radius:3px}.key button{all:unset;cursor:pointer;margin-left:auto;color:var(--mut)}
+.link{all:unset;cursor:pointer;color:var(--acc);text-decoration:underline;font-size:13px}
+details{margin-top:18px}summary{cursor:pointer;font-weight:600}
+.notes{display:grid;gap:12px;margin-top:10px}
+.notes p{margin:2px 0;color:var(--mut);max-width:80ch}
+a{color:var(--acc)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body><div class="wrap">
+<header class="top"><h1>Handheld receiver lab ranking</h1>
+<p class="lede"><span id="n1"></span> VHF/UHF handhelds measured in the ARRL Lab. Click a dot or row to compare up to four.</p></header>
+
+<div class="bar">
+ <div class="seg" role="group" aria-label="Band"><button data-b="2" aria-pressed="true">2 m</button><button data-b="7" aria-pressed="false">70 cm</button></div>
+ <input type="search" id="q" placeholder="Search make or model" aria-label="Search radios">
+ <div class="seg" role="group" aria-label="Show"><button data-v="all" aria-pressed="true">All</button><button data-v="full" aria-pressed="false">Complete data</button><button data-v="new" aria-pressed="false">Added</button></div>
+ <button class="hp" id="hp" aria-pressed="false" title="Click to cycle: narrow ≥ 71 dB, wide ≥ 81 dB, both, then off">High perf</button>
+ <button class="hp" id="bt" aria-pressed="false" title="Click to cycle: narrow, wide, combo, then off. Keeps radios at least as good as the most recently selected radio on that measure. Select a radio first.">Better</button>
+</div>
+<div class="chips" id="chips" role="group" aria-label="Filter by make"></div>
+
+<div class="grid">
+ <section class="card chart">
+  <h2>Strong-signal map</h2>
+  <p class="sub" id="csub"></p>
+  <div class="plot"><div id="tip"></div><svg id="svg" viewBox="0 0 640 400" role="img" aria-label="Scatter plot of narrow-spacing versus wide-spacing third-order dynamic range"></svg></div>
+ </section>
+ <aside class="card cmp"><h2>Compare</h2><div id="cmp"></div></aside>
+ <section class="card tbl"><details><summary>Table data <span id="tc" style="color:var(--mut);font-weight:400;font-size:14px"></span></summary>
+  <div class="scroll"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
+  <div class="cap" id="cap"></div></details>
+ </section>
+</div>
+
+<details><summary>How to read these numbers</summary><div class="notes">
+ <p><b>Wide-spacing third-order dynamic range</b> (10 MHz spacing) shows how well the radio resists intermodulation from strong signals far away, such as pagers, broadcast towers and mountaintop sites. This is the number that matters most in cities.</p>
+ <p><b>Narrow-spacing third-order dynamic range</b> uses a 20 kHz spacing, the same idea for nearby channels. <b>Adjacent rejection</b> is how well the radio ignores a strong signal on the next channel (20 kHz). <b>Sensitivity</b> is the signal for 12 dB SINAD, so lower is better.</p>
+ <p><b>Score</b> is wide + narrow + adjacent, in dB, for the chosen band. Older radios were never tested at wide spacing, so their score (marked †) is a partial sum and understates them. Use Complete data to compare like with like.</p>
+</div></details>
+
+
+<details><summary>Data verification</summary><div class="notes">
+ <p><b>Cross-check.</b> Every row of the supplied file was compared with the QRP Blog compilation of QST lab results (94 radios). 93 matched number for number. One did not: the Kenwood TH-D74A has a 2 m wide-spacing figure of 87 dB in the supplied file. That is the Band B (wideband receiver) result. The printed QST review (April 2017) gives 79 dB for Band A, the VHF/UHF receiver, and its Key Measurements Summary is explicitly Band A, so this page uses 79 dB. The TH-D75A review (QST September 2024) shows the same pattern: Band B measures 79 dB and Band A 77 dB at 146 MHz. Band B edging ahead of Band A on 2 m in both radios is a consistent trait of the design, not a transposition. A successor that lost 10 dB of wide-spacing range while gaining elsewhere would also be implausible. The TH-D75A row was supplied with Band B figures and now shows Band A, so the two radios are compared on the same basis.</p>
+ <p><b>Checked against the ARRL reviews:</b> 14 radios (TH-D74A, TH-D75A, FT-5DR, FT-3DR, FT-818, IC-705, AT-D878UV, ID-52A, FT-60R, FT-70DR and the four added radios). The other 91 agree with the QRP Blog table, which means the numbers match that compilation, not that I traced each one to its original QST issue. No radio is left without a check. The IC-705 (QST, February 2021), FT-3DR (April 2020), FT-818ND (January 2019) and AT-D878UV (July 2019) rows match their reviews exactly.</p>
+ <p><b>Mode and receiver choices.</b> The FT-5DR figures are Receiver B, as in the ARRL summary; its Receiver A is noticeably weaker (62 / 73 / 66 dB on 2 m). The ID-52A figures match the ARRL summary but use FM-N (narrow) results; its FM results are 85 / 71 / 78 dB on 2 m and 77 / 74 / 72 dB on 70 cm, so it is not on exactly the same basis as most rows.</p>
+ <p><b>Outliers.</b> The IC-T7A (105 dB), IC-W32A (91), DJ-G5TH (90) and FT-50R (90) have 70 cm wide-spacing values far above their other results. I could not trace them, so they carry a ⚠. The FT-70DR's 84 dB on 70 cm is confirmed by its review, so a high value alone is not proof of an error.</p>
+</div></details>
+<details><summary>Method and caveats</summary><div class="notes">
+ <p>The original table was supplied as a file and follows the layout of the QRP Blog compilation of QST lab results. Its Total Rejection column equals the 2 m sum of the three dB figures, which this page recomputes for each band.</p>
+ <p>Added rows are single-unit ARRL Lab results read from the published QST reviews, FM mode, receiver A where a radio has two. Mobiles, base stations and wideband scanners were left out as a different category. The ARRL also publishes a members-only comparison tool at compare.arrl.org with newer entries that I could not open.</p>
+</div></details>
+</div>
+<script>
+const D=[["Kenwood","TH-D74A",0.19,79.0,67.0,67.0,0.18,69.0,62.0,62.0,0,2],["Yaesu","FT-818",0.18,96.0,72.0,72.0,0.16,85.0,67.0,67.0,0,2],["Icom","ID-52A",0.11,85.0,73.0,79.0,0.12,78.0,73.0,73.0,0,2],["Icom","IC-705",0.13,87.0,72.0,77.0,0.15,81.0,69.0,69.0,0,2],["Kenwood","TH-D72A",0.14,81.0,74.0,77.0,0.16,70.0,69.0,69.0,0,1],["Icom","IC-V80",0.16,89.0,65.0,74.0,null,null,null,null,0,1],["Wouxun","KG-UV8D",0.11,78.0,69.0,79.0,0.13,81.0,74.0,74.0,0,1],["Icom","IC-V82",0.11,88.0,69.0,69.0,null,null,null,null,0,1],["Icom","IC-T70A",0.1,86.0,70.0,70.0,0.12,78.0,69.0,69.0,0,1],["Wouxun","KG-UVD1P",0.11,86.0,69.0,69.0,0.12,82.0,60.0,60.0,0,1],["Alinco","DJ-175T",0.18,83.0,70.0,70.0,null,null,null,null,0,1],["Wouxun","KG-UV2D",0.11,86.0,69.0,67.0,0.12,82.0,60.0,60.0,0,1],["Icom","IC-V8",0.13,93.0,64.0,64.0,null,null,null,null,0,1],["Yaesu","VX-120",0.16,84.0,68.0,68.0,null,null,null,null,0,1],["Yaesu","VX-170",0.16,84.0,68.0,68.0,null,null,null,null,0,1],["Yaesu","FT-10R",0.14,78.0,75.0,67.0,null,null,null,null,0,1],["AnyTone","AT-D868UV",0.2,81.0,63.0,76.0,0.18,71.0,68.0,69.0,0,1],["Yaesu","FT-60R",0.13,85.0,67.0,67.0,0.16,83.0,58.0,58.0,0,2],["Kenwood","TH-22AT",0.14,83.0,76.0,59.0,null,null,null,null,0,1],["Kenwood","TH-K2AT",0.17,78.0,67.0,71.0,null,null,null,null,0,1],["Yaesu","FT-25R",0.15,77.0,63.0,74.0,null,null,null,null,0,1],["Yaesu","FT-5DR",0.14,80.0,65.0,65.0,0.12,68.0,66.0,64.0,0,2],["Alinco","DJ-G5TH",0.15,78.0,67.0,63.0,0.15,90.0,65.0,55.0,0,1],["Yaesu","FT-51R",0.15,79.0,62.0,66.0,0.16,null,61.0,58.0,0,1],["Yaesu","VX-6R",0.13,80.0,63.0,63.0,0.16,62.0,59.0,59.0,0,1],["Yaesu","VX-150",0.16,76.0,65.0,65.0,null,null,null,null,0,1],["Yaesu","FT-11R",0.15,74.0,63.0,69.0,null,null,null,null,0,1],["Kenwood","TH-G71A",0.16,83.0,62.0,61.0,0.16,72.0,58.0,58.0,0,1],["Alinco","DJ-V57T",0.19,82.0,60.0,64.0,0.17,80.0,70.0,62.0,0,1],["Icom","ID-51A",0.13,75.0,65.0,65.0,0.12,78.0,66.0,66.0,0,1],["Yaesu","VX-7R",0.16,76.0,63.0,65.0,0.15,65.0,58.0,61.0,0,1],["Kenwood","TH-235A",0.14,80.0,63.0,61.0,null,null,null,null,0,1],["Icom","IC-V85",0.2,81.0,58.0,65.0,null,null,null,null,0,1],["Kenwood","TH-79A",0.14,85.0,62.0,56.0,0.16,null,67.0,53.0,0,1],["AnyTone","AT-D878UV",0.19,70.0,59.0,74.0,0.17,70.0,68.0,69.0,0,2],["Yaesu","VX-8GR",0.16,79.0,58.0,65.0,0.14,64.0,58.0,58.0,0,1],["TYT","TH-UVF1",0.15,72.0,65.0,65.0,0.14,72.0,67.0,67.0,0,1],["Radioshack","HTX-245",0.14,79.0,61.0,61.0,0.22,71.0,55.0,55.0,0,1],["Icom","IC-T22A",0.14,80.0,61.0,60.0,null,null,null,null,0,1],["Icom","IC-Z1A",0.15,78.0,60.0,63.0,0.16,null,60.0,61.0,0,1],["Icom","IC-92AD",0.13,75.0,61.0,61.0,0.14,60.0,65.0,65.0,0,1],["Icom","IC-T7A",0.14,71.0,61.0,65.0,0.15,105.0,58.0,62.0,0,1],["Alinco","DJ-582T",0.14,72.0,63.0,62.0,0.16,null,61.0,58.0,0,1],["Yaesu","VX-1R",0.18,72.0,62.0,62.0,0.18,68.0,49.0,47.0,0,1],["Yaesu","FT-4XR",0.2,63.0,61.0,72.0,0.18,65.0,68.0,65.0,0,1],["Kenwood","TH-D7A",0.16,78.0,59.0,59.0,0.14,72.0,58.0,58.0,0,1],["Yaesu","FT-252R",0.18,68.0,60.0,66.0,0.2,70.0,61.0,61.0,0,1],["Yaesu","FT-65R",0.14,67.0,63.0,63.0,0.14,69.0,67.0,67.0,0,1],["Kenwood","TH-F6A",0.16,73.0,60.0,60.0,0.17,72.0,57.0,57.0,0,1],["Icom","IC-T8A",0.16,80.0,53.0,60.0,0.15,66.0,52.0,59.0,0,1],["Yaesu","VX-5R",0.15,66.0,61.0,65.0,0.17,65.0,58.0,58.0,0,1],["Icom","IC-W32A",0.13,70.0,57.0,64.0,0.15,91.0,58.0,62.0,0,1],["Kenwood","TH-D7AG",0.17,76.0,57.0,57.0,0.14,78.0,54.0,54.0,0,1],["Yaesu","VX-8R",0.19,69.0,60.0,60.0,0.22,60.0,61.0,57.0,0,1],["Icom","IC-T90A",0.15,65.0,58.0,66.0,0.16,60.0,57.0,58.0,0,1],["Alinco","DJ-V5TH",0.14,81.0,52.0,55.0,0.16,69.0,51.0,53.0,0,1],["Radioshack","HTX-200",0.22,71.0,57.0,58.0,null,null,null,null,0,1],["Alinco","DJ-190T",0.15,68.0,58.0,59.0,null,null,null,null,0,1],["Alinco","DJ-G7T",0.17,69.0,57.0,57.0,0.17,73.0,53.0,51.0,0,1],["Alinco","DJ-V17T",0.19,74.0,54.0,54.0,null,null,null,null,0,1],["Yaesu","FT-50R",0.14,75.0,55.0,51.0,0.15,90.0,54.0,51.0,0,1],["Yaesu","FT-3DR",0.17,72.0,62.0,66.0,0.15,62.0,57.0,71.0,0,2],["Alinco","DJ-500T",0.15,67.0,61.0,72.0,0.14,71.0,69.0,69.0,0,1],["Kenwood","TH-D75A",0.17,77.0,76.0,74.0,0.17,71.0,74.0,63.0,0,2],["Yaesu","FT-70DR",0.13,71.0,63.0,65.0,0.14,84.0,59.0,65.0,0,2],["Yaesu","FT-2DR",0.16,75.0,61.0,62.0,0.14,57.0,57.0,58.0,0,1],["Yaesu","FT-1DR",0.18,73.0,58.0,67.0,0.18,61.0,63.0,55.0,0,1],["Alinco","DJ-195T",0.17,82.0,58.0,58.0,null,null,null,null,0,1],["Radioshack","HTX-420",0.14,73.0,50.0,58.0,0.14,65.0,56.0,59.0,0,1],["Icom","IC-91A",0.14,65.0,56.0,59.0,0.12,73.0,55.0,59.0,0,1],["Alinco","DJ-191",0.16,65.0,58.0,57.0,null,null,null,null,0,1],["Icom","IC-T2A",0.15,73.0,53.0,51.0,null,null,null,null,0,1],["Icom","IC-T81A",0.14,68.0,54.0,54.0,0.14,66.0,61.0,61.0,0,1],["Icom","IC-P7A",0.15,59.0,56.0,56.0,0.13,64.0,57.0,62.0,0,1],["Alinco","DJ-C1T",0.16,72.0,50.0,49.0,null,null,null,null,0,1],["Alinco","DJ-S11T",0.19,55.0,56.0,59.0,null,null,null,null,0,1],["Alinco","DJ-C7T",0.2,64.0,52.0,51.0,0.23,69.0,53.0,53.0,0,1],["Yaesu","VX-2R",0.16,67.0,46.0,46.0,0.14,57.0,46.0,46.0,0,1],["Alinco","DJ-C5T",0.16,65.0,46.0,46.0,0.19,70.0,48.0,48.0,0,1],["Alinco","DJ-596T",0.17,76.0,42.0,38.0,0.18,68.0,43.0,40.0,0,1],["Icom","IC-Q7A",0.16,59.0,43.0,51.0,0.19,65.0,57.0,62.0,0,1],["Realistic","HTX-202",0.17,null,70.0,72.0,null,null,null,null,0,1],["Yaesu","VX-3R",0.16,62.0,39.0,39.0,0.14,75.0,39.0,39.0,0,1],["Icom","IC-P2AT",0.14,null,65.0,70.0,null,null,null,null,0,1],["Yaesu","FT-415",0.15,null,64.0,68.0,null,null,null,null,0,1],["Icom","IC-2SRA",0.14,null,65.0,67.0,null,null,null,null,0,1],["Kenwood","TH-77A",0.16,null,60.0,67.0,0.2,null,65.0,56.0,0,1],["Kenwood","TH-28A",0.13,null,64.0,63.0,0.25,null,null,null,0,1],["Kenwood","TH-225A",0.12,null,67.0,60.0,null,null,null,null,0,1],["Alinco","DJ-580T",0.16,null,65.0,60.0,0.14,null,67.0,58.0,0,1],["Alinco","DJ-162TD",0.18,null,73.0,52.0,null,null,null,null,0,1],["Yaesu","FT-530",0.16,null,58.0,64.0,0.16,null,60.0,64.0,0,1],["Icom","IC-W21AT",0.16,null,56.0,65.0,0.14,null,61.0,60.0,0,1],["Icom","IC-32AT",0.16,null,58.0,62.0,0.22,null,59.0,61.0,0,1],["Alinco","DJ-F1T",0.18,null,62.0,58.0,null,null,null,null,0,1],["Kenwood","TH-78A",0.16,null,58.0,61.0,0.16,null,69.0,58.0,0,1],["Yaesu","FT-470",0.14,null,53.0,65.0,0.14,null,58.0,62.0,0,1],["Alinco","DJ-560T",0.18,null,53.0,57.0,0.28,null,72.0,55.0,0,1],["Alinco","DJ-G29T",0.17,null,54.0,54.0,0.14,null,56.0,56.0,0,1],["Yaesu","FT-411E",0.18,null,43.0,63.0,null,null,null,null,0,1],["Kenwood","TH-K20A",0.13,80.0,74.0,91.0,null,null,null,null,0,1],["Icom","IC-T10",0.14,66,64,75,0.13,67,62,74,1,2],["Icom","ID-50A",0.12,90,73,76,0.14,77,69,69,2,2],["Baofeng","GT-5R",0.2,71,65,69,0.18,67,68,67,3,2],["Icom","IC-R15 (receiver only)",0.14,66,58,67,0.19,69,67,66,4,2]];
+const SRC={"1":{"m":"Icom IC-T10","t":"QST, August 2023","u":"https://www.arrl.org/files/file/ProductReviewsForDeb/2023/pr082023.pdf","c":"FM mode, 20 kHz and 10 MHz offsets. The lab flagged its adjacent-channel figures as phase-noise limited, so the true receiver may be slightly better than shown."},"2":{"m":"Icom ID-50A","t":"QST, June 2024","u":"https://www.arrl.org/files/file/ProductReviewsForDeb/2024/pr062024.pdf","c":"Receiver A, FM, from the detailed results table. The review summary graphic shows slightly different wide-spacing values (89 dB on 2 m, 85 dB on 70 cm), so treat those two numbers as approximate. The 70 cm 20 kHz figures are phase-noise limited."},"3":{"m":"Baofeng GT-5R","t":"QST, January 2022","u":"https://www.arrl.org/files/file/2022%20Product%20Reviews/Jan%20twentytwo.pdf","c":"FM mode, 20 kHz and 10 MHz offsets. One of very few budget imports with full ARRL Lab dynamic range numbers."},"4":{"m":"Icom IC-R15 (handheld receiver)","t":"QST, June 2025","u":"https://www.arrl.org/files/file/ProductReviewsForDeb/2025/pr062025.pdf","c":"Receive-only, so it is included as a reference point for what the same Icom front-end design does. Receiver A, FM. The lab footnoted some 70 cm values; I could only read the numbers, not the footnote text, so confirm in the PDF."}};
+const F=['make','model','s2','w2','n2','a2','s7','w7','n7','a7','src','v'];
+const VT=['Not independently checked','Matches the QRP Blog compilation of QST data','Checked against the ARRL review'];
+const OT='The 70 cm wide-spacing figure is unusually high next to this radio other results and could not be traced to the original review';const NG=new Set(['TH-D74A','TH-D75A','IC-705','AT-D878UV','FT-3DR','FT-818','FT-5DR']);const NOTE={'IC-T7A':OT,'IC-W32A':OT,'DJ-G5TH':OT,'FT-50R':OT,'TH-D74A':'Band A (VHF/UHF receiver), as in the ARRL summary. Band B, the wideband receiver, measured 87 dB wide-spacing on 2 m, 61 dB narrow and 61 dB adjacent.','TH-D75A':'Band A (VHF/UHF receiver). Band B measured 79 / 74 / 72 dB on 2 m and 68 / 73 / 65 dB on 70 cm; the supplied file had these Band B figures.','IC-705':'Every figure matches the QST review of February 2021 (preamp on, FM). The 70 cm 20 kHz figure was noise limited, so the receiver is at least that good.','AT-D878UV':'Wide FM mode (QST, July 2019); every figure matches the review. In narrow mode, adjacent-channel rejection is 76 dB on 2 m and 73 dB on 70 cm.','FT-3DR':'Receiver B, as in the ARRL summary (QST, April 2020); every figure matches the review. Receiver A measured 68 dB adjacent-channel rejection on 2 m and 69 dB on 70 cm.','FT-818':'Preamp on, which is always the case at VHF/UHF (QST, January 2019). The 20 kHz figures were noise limited, so the receiver may be better than shown. The 10 MHz figures come from the review FM test.','FT-5DR':'Receiver B, as in the ARRL summary (QST, April 2022). Receiver A is weaker: 62 / 73 / 66 dB on 2 m.'};
+const rows=D.map((r,i)=>{const o={id:i};F.forEach((k,j)=>o[k]=r[j]);return o});
+const $=s=>document.querySelector(s),C=['#0a84c6','#e0731a','#2f9e44','#a23cc0'];
+const MK=[...new Set(rows.map(r=>r.make))].sort((a,b)=>a.localeCompare(b));
+const hue=m=>Math.round(MK.indexOf(m)*360/MK.length);
+const M={s:{n:'Sensitivity',u:'µV',lo:1,min:.08,max:.3},w:{n:'Wide-spacing DR',min:50,max:110},n:{n:'Narrow-spacing DR',min:35,max:80},a:{n:'Adjacent rejection',min:35,max:95},t:{n:'Score',min:100,max:260}};
+let band='2',q='',makes=new Set(),view='all',sort={k:'t',d:-1},sel=[],hp=0,bt=0;let HN=70,HW=80;function thr(){HN=71;HW=81}
+const full=o=>['w','n','a'].every(m=>o[m+band]!=null);
+function score(o){const p=['w','n','a'].map(m=>o[m+band]).filter(x=>x!=null);return p.length?p.reduce((a,b)=>a+b,0):null}
+const get=(o,k)=>k==='t'?score(o):o[k+band];
+const pct=(v,m)=>{let p=Math.max(0,Math.min(1,(v-m.min)/(m.max-m.min)));return Math.round((m.lo?1-p:p)*100)};
+const fmt=(v,k)=>v==null?'—':k==='s'?v.toFixed(2):v;
+const ref=()=>sel.length?rows[sel[sel.length-1]]:null;
+function beat(o,r){const n=r['n'+band],w=r['w'+band];return(bt===2||n==null||o['n'+band]>=n)&&(bt===1||w==null||o['w'+band]>=w)}
+function rfUI(){const r=ref(),b=$('#bt'),m=['','narrow','wide','combo'][bt];b.setAttribute('aria-pressed',bt>0);b.textContent=!bt?'Better':r?'Better than '+r.model+': '+m:'Better: '+m;
+ if(bt){const n=r&&r['n'+band],w=r&&r['w'+band],p=[];if(bt!==2&&n!=null)p.push('narrow-spacing ≥ '+n+' dB');if(bt!==1&&w!=null)p.push('wide-spacing ≥ '+w+' dB');
+  $('#csub').textContent+=!r?` Better filter (${m}): select a radio from the map or table to set the reference.`:p.length?` Better filter (${m}): radios at least as good as ${label(r)} (${p.join(' and ')}).`:` Better filter (${m}): ${label(r)} has no ${m} result on this band, so nothing is filtered.`}}
+function vis(){return rows.filter(o=>(!q||(o.make+' '+o.model).toLowerCase().includes(q))&&(!makes.size||makes.has(o.make))&&(view!=='new'||o.src)&&(view!=='full'||full(o))&&(view!=='chk'||o.v===0)&&(!hp||((hp===2||o['n'+band]>=HN)&&(hp===1||o['w'+band]>=HW)))&&(!bt||!ref()||beat(o,ref()))&&(o['s'+band]!=null||o['n'+band]!=null))}
+function sorted(l){const{k,d}=sort;return l.slice().sort((a,b)=>{if(k==='m')return d*(a.make+a.model).localeCompare(b.make+b.model);const x=get(a,k),y=get(b,k);if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;return d*(x-y)||a.model.localeCompare(b.model)})}
+function toggle(i){const x=sel.indexOf(i);if(x>=0)sel.splice(x,1);else{sel.push(i);if(sel.length>4)sel.shift()}render()}
+const label=o=>o.make+' '+o.model;
+function chart(l){
+ const W=640,H=400,L=46,R=14,T=12,B=42,xs=[35,80],ys=[50,110];
+ const X=v=>L+(v-xs[0])/(xs[1]-xs[0])*(W-L-R),Y=v=>H-B-(v-ys[0])/(ys[1]-ys[0])*(H-B-T);
+ let s='';
+ for(let v=40;v<=80;v+=10)s+=`<line class="g" x1="${X(v)}" x2="${X(v)}" y1="${T}" y2="${H-B}"/><text x="${X(v)}" y="${H-B+16}" text-anchor="middle">${v}</text>`;
+ for(let v=50;v<=110;v+=10)s+=`<line class="g" x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end">${v}</text>`;
+ s+=`<text x="${(L+W-R)/2}" y="${H-6}" text-anchor="middle">Narrow-spacing dynamic range, 20 kHz (dB)</text><text transform="translate(12 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">Wide-spacing, 10 MHz (dB)</text><text x="${W-R-4}" y="${T+14}" text-anchor="end">better ↗</text>`;
+ if(hp){const vx=hp!==2,hy=hp!==1,x0=vx?X(HN):L,y1=hy?Y(HW):H-B,ln='stroke="var(--acc)" stroke-width="1.6" stroke-dasharray="2 5" stroke-linecap="round"';
+  s+=`<rect x="${x0}" y="${T}" width="${W-R-x0}" height="${y1-T}" fill="var(--acc)" opacity=".08"/>`;
+  if(vx)s+=`<line x1="${X(HN)}" x2="${X(HN)}" y1="${T}" y2="${H-B}" ${ln}/><text x="${X(HN)+4}" y="${H-B-6}" style="fill:var(--acc)">narrow ≥ ${HN}</text>`;
+  if(hy)s+=`<line x1="${L}" x2="${W-R}" y1="${Y(HW)}" y2="${Y(HW)}" ${ln}/><text x="${L+6}" y="${Y(HW)-5}" style="fill:var(--acc)">wide ≥ ${HW}</text>`}
+ const WA=55,wy=o=>o['w'+band]==null?WA:o['w'+band],pts=l.filter(o=>o['n'+band]!=null);
+ const rf=bt?ref():null;
+ if(rf){const vx=bt!==2&&rf['n'+band]!=null,hy=bt!==1&&rf['w'+band]!=null;
+  if(vx||hy){const rx=vx?X(rf['n'+band]):L,ry=hy?Y(rf['w'+band]):H-B,ln2='stroke="var(--new)" stroke-width="1.6" stroke-dasharray="2 5" stroke-linecap="round"';
+   s+=`<rect x="${rx}" y="${T}" width="${W-R-rx}" height="${ry-T}" fill="var(--new)" opacity=".07"/>`+(vx?`<line x1="${rx}" x2="${rx}" y1="${T}" y2="${H-B}" ${ln2}/>`:'')+(hy?`<line x1="${L}" x2="${W-R}" y1="${ry}" y2="${ry}" ${ln2}/>`:'')}}
+ pts.sort((a,b)=>sel.includes(a.id)-sel.includes(b.id));
+ pts.forEach(o=>{const a=o['a'+band],r=a==null?4:3+Math.max(0,Math.min(7,(a-40)/8)),si=sel.indexOf(o.id);
+  const st=si>=0?`stroke="${C[si]}" stroke-width="3.5"`:o['w'+band]==null?'stroke="var(--new)" stroke-width="2.5"':'stroke="var(--surf)" stroke-width="1"';
+  s+=`<circle data-i="${o.id}" tabindex="0" role="button" aria-label="${label(o)}" cx="${X(o['n'+band])}" cy="${Y(wy(o))}" r="${r}" fill="hsl(${hue(o.make)} 62% 48% / .72)" ${st}/>`;
+  if(si>=0)s+=`<text x="${X(o['n'+band])+r+5}" y="${Y(wy(o))+4}" style="fill:${C[si]};font-weight:600;font-size:12px">${o.model}</text>`});
+ $('#svg').innerHTML=s;
+ const miss=l.length-pts.length,na=pts.filter(o=>o['w'+band]==null).length;
+ $('#csub').textContent=`${pts.length} radios plotted. Dot size shows adjacent rejection.${na?` A pink ring marks the ${na} older radios with no wide-spacing measurement, plotted at an assumed ${WA} dB.`:''}${miss?` ${miss} more lack narrow-spacing data and appear only in the table.`:''}`;
+}
+function compare(){
+ if(!sel.length){$('#cmp').innerHTML='<p class="sub">Pick up to four radios from the map or the table to see them side by side for the selected band.</p>';return}
+ const os=sel.map(i=>rows[i]);let h='';
+ os.forEach((o,i)=>h+=`<div class="key"><i style="background:${C[i]}"></i><span>${label(o)}</span><button data-x="${o.id}" aria-label="Remove ${label(o)}">✕</button></div>`);
+ ['s','w','n','a','t'].forEach(k=>{h+=`<div class="cm"><h3>${M[k].n}${M[k].u?' ('+M[k].u+', lower is better)':' (dB)'}</h3>`;
+  os.forEach((o,i)=>{const v=get(o,k);h+=`<div class="cr"><span>${o.model}</span><b>${fmt(v,k)}</b><div class="cb"><i style="width:${v==null?0:pct(v,M[k])}%;background:${C[i]}"></i></div></div>`});h+='</div>'});
+ $('#cmp').innerHTML=h+'<p style="margin:12px 0 0"><button class="link" id="clr">Clear all</button></p>';
+}
+function table(l){
+ const cols=[['m','Radio'],['s','Sensitivity <small>µV</small>'],['w','Wide <small>dB</small>'],['n','Narrow <small>dB</small>'],['a','Adjacent <small>dB</small>'],['t','Score <small>dB</small>']];
+ $('#thead').innerHTML='<tr>'+cols.map(([k,t])=>`<th aria-sort="${sort.k===k?(sort.d>0?'ascending':'descending'):'none'}"><button data-k="${k}">${t}${sort.k===k?(sort.d>0?' ▲':' ▼'):''}</button></th>`).join('')+'</tr>';
+ const s=sorted(l);
+ $('#tbody').innerHTML=s.map(o=>{const si=sel.indexOf(o.id);
+  let r=`<tr data-i="${o.id}" tabindex="0" class="${si>=0?'on':''}" style="--c:${si>=0?C[si]:'transparent'}" aria-selected="${si>=0}"><td><span class="mk">${o.make}</span>${o.model}<i class="vd v${o.v}" title="${VT[o.v]}"></i>${NOTE[o.model]?'<span title="'+NOTE[o.model]+'">'+(NG.has(o.model)?'ⓘ':'⚠')+'</span>':''}${o.src?`<a class="pill" href="${SRC[o.src].u}" target="_blank" rel="noopener" title="Added from ${SRC[o.src].t}. Opens the ARRL review.">New</a>`:''}</td>`;
+  ['s','w','n','a','t'].forEach(k=>{const v=get(o,k);r+=`<td class="n" style="--p:${v==null?0:pct(v,M[k])}%">${fmt(v,k)}${k==='t'&&v!=null&&!full(o)?'<sup title="Partial sum: a value is missing">†</sup>':''}</td>`});
+  return r+'</tr>'}).join('')||'<tr><td colspan="6" class="empty">No radios match these filters.</td></tr>';
+ $('#tc').textContent=`· ${s.length} of ${rows.length} radios`;$('#cap').textContent=`Showing ${s.length} of ${rows.length}. † Partial score because a value was never measured. Click a heading to sort. Dot after the name: filled = checked against the ARRL review, ring = matches the QRP Blog compilation of QST data. ⚠ = unusually high 70 cm wide-spacing value, original not traced. ⓘ = see the tooltip.`;
+}
+function render(){thr();const l=vis();chart(l);compare();table(l);rfUI();if(hp){const p=[];if(hp!==2)p.push('narrow ≥ '+HN+' dB');if(hp!==1)p.push('wide ≥ '+HW+' dB');$('#csub').textContent+=` High-performance filter (${['','narrow','wide','combo'][hp]}): ${p.join(' and ')}.`}}
+$('#chips').innerHTML=MK.map(m=>`<button class="chip" aria-pressed="false" data-m="${m}"><i style="background:hsl(${hue(m)} 62% 48%)"></i>${m}</button>`).join('');
+$('#n1').textContent=rows.length;
+
+document.addEventListener('click',e=>{const t=e.target;let b;
+ if(b=t.closest('[data-b]')){band=b.dataset.b;document.querySelectorAll('[data-b]').forEach(x=>x.setAttribute('aria-pressed',x===b));render()}
+ else if(b=t.closest('[data-v]')){view=b.dataset.v;document.querySelectorAll('[data-v]').forEach(x=>x.setAttribute('aria-pressed',x===b));render()}
+ else if(b=t.closest('[data-m]')){const m=b.dataset.m;makes.has(m)?makes.delete(m):makes.add(m);b.setAttribute('aria-pressed',makes.has(m));render()}
+ else if(b=t.closest('[data-k]')){const k=b.dataset.k;if(sort.k===k)sort.d*=-1;else sort={k,d:(k==='s'||k==='m')?1:-1};render()}
+ else if(b=t.closest('[data-x]')){toggle(+b.dataset.x)}
+ else if(t.closest('#clr')){sel=[];render()}
+ else if(b=t.closest('#bt')){bt=(bt+1)%4;render()}
+ else if(b=t.closest('#hp')){hp=(hp+1)%4;b.setAttribute('aria-pressed',hp>0);b.textContent=['High perf','High perf: narrow','High perf: wide','High perf: combo'][hp];render()}
+ else if(t.closest('.pill')){}
+ else if(b=t.closest('[data-i]')){toggle(+b.dataset.i)}});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.dataset&&e.target.dataset.i!=null){e.preventDefault();toggle(+e.target.dataset.i)}});
+const tip=$('#tip'),plot=$('.plot');
+$('#svg').addEventListener('pointermove',e=>{const c=e.target.closest('circle');if(!c){tip.style.opacity=0;return}
+ const o=rows[+c.dataset.i],p=plot.getBoundingClientRect();tip.style.opacity=1;tip.style.left=(e.clientX-p.left)+'px';tip.style.top=(e.clientY-p.top)+'px';
+ tip.textContent=`${label(o)} · wide ${o['w'+band]==null?'55 (assumed)':fmt(o['w'+band])} · narrow ${fmt(o['n'+band])} · adj ${fmt(o['a'+band])} dB`});
+$('#svg').addEventListener('pointerleave',()=>tip.style.opacity=0);
+$('#q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render()});
+render();
+</script></body></html>
