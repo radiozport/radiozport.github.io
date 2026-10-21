@@ -2,16 +2,6 @@
 
 An interactive, single-page explorer for ARRL Lab receiver measurements of VHF/UHF handheld radios. Plot every radio on a strong-signal map, filter by performance, and compare up to four radios side by side on 2 m or 70 cm.
 
-Everything lives in one file, `index.html`. There is no build step, no framework and no server.
-
-## Quick start
-
-Open `index.html` in any modern browser. To serve it locally instead:
-
-```sh
-python3 -m http.server 8000
-# then visit http://localhost:8000
-```
 
 The page loads two fonts (Bricolage Grotesque and Instrument Sans) from Google Fonts. Offline, it falls back to system fonts and works the same.
 
